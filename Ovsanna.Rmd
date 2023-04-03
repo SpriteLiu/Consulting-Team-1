@@ -133,3 +133,17 @@ ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+g
 ```
 
 
+```{r}
+library(dplyr)
+#Choose problem
+newdata <- data[which(data$Problem=="Average Anxiety Today"),]
+newdata <- newdata[,-c(1:3)]
+p <- as.matrix(newdata)
+y <- c(t(p))
+y <- y[!is.na(y)] 
+t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
+T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
+m <- data.frame(y,ID,t,T)z
+```
+
