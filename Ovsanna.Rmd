@@ -2,24 +2,32 @@
 title: "Ovsanna"
 author: "Hsueh-Pin Liu"
 date: "`r Sys.Date()`"
-output: pdf_document
+output: 
+    pdf_document:
+        latex_engine: xelatex
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Environment
+# Previous steps
 
-```{r}
+Before making the EDAs, I first changed the variable's names of the .xlsx file to make it easier to import, so the new .xlsx file is different from the original one.
+
+```{r include=F}
 library(ggplot2)
 library(readxl)
+library(tidyverse)
+library(ggpubr)
 data<- read_excel("Daily Monitor Tracking Log.xlsx")
 ```
 
-#Plots
+# EDAs
 
-```{r}
+According to the data, there are 2 "two-week" patients, 4"three-week" patients and 2 "four-week" patients. I make plots for each patient's each question and the black line seperates the pre-treatment and treatment time.
+
+```{r Fig1, fig.cap="2-week pre-treatment patients",echo=F,warning=F,fig.height=4,fig.width=10}
 #Two weeks
 #1
 data1 <- data[c(1:8),]
@@ -32,7 +40,7 @@ point <- c(t(as.matrix(data1)))
 type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=23)
 df <- data.frame(time=time,point=point,type=type)
 df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=1, Randomization=2")+facet_wrap(~type)+geom_vline(xintercept=15)
+p1 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=1, Randomization=2")+facet_wrap(~type)+geom_vline(xintercept=15)
 
 #2
 
@@ -46,9 +54,11 @@ point <- c(t(as.matrix(data2)))
 type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=23)
 df <- data.frame(time=time,point=point,type=type)
 df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=3, Randomization=2")+facet_wrap(~type)+geom_vline(xintercept=15)
+p2 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=3, Randomization=2")+facet_wrap(~type)+geom_vline(xintercept=15)
+ggarrange(p1,p2,ncol=2,nrow=1)
 ```
-```{r}
+
+```{r Fig2, fig.cap="3-week pre-treatment patients",echo=F,warning=F,fig.height=8,fig.width=10}
 #Three weeks
 #3
 data3 <- data[c(9:16),]
@@ -61,7 +71,7 @@ point <- c(t(as.matrix(data3)))
 type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=30)
 df <- data.frame(time=time,point=point,type=type)
 df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=5, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
+p3 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=5, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
 
 #4
 data4 <- data[c(33:40),]
@@ -74,7 +84,7 @@ point <- c(t(as.matrix(data4)))
 type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=30)
 df <- data.frame(time=time,point=point,type=type)
 df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=9, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
+p4 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=9, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
 
 #5
 data5 <- data[c(41:48),]
@@ -87,7 +97,7 @@ point <- c(t(as.matrix(data5)))
 type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=30)
 df <- data.frame(time=time,point=point,type=type)
 df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=12, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
+p5 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=12, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
 
 #6
 data6 <- data[c(57:64),]
@@ -100,10 +110,11 @@ point <- c(t(as.matrix(data6)))
 type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=30)
 df <- data.frame(time=time,point=point,type=type)
 df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=17, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
+p6 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=17, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
+ggarrange(p3,p4,p5,p6,ncol=2,nrow=2)
 ```
 
-```{r}
+```{r Fig3, fig.cap="4-week pre-treatment patients",echo=F,warning=F,fig.height=4,fig.width=10}
 #Four weeks
 #7
 data7 <- data[c(25:32),]
@@ -116,7 +127,7 @@ point <- c(t(as.matrix(data7)))
 type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=37)
 df <- data.frame(time=time,point=point,type=type)
 df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=6, Randomization=4")+facet_wrap(~type)+geom_vline(xintercept=29)
+p7 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=6, Randomization=4")+facet_wrap(~type)+geom_vline(xintercept=29)
 
 #8
 data8 <- data[c(49:56),]
@@ -128,22 +139,17 @@ point <- c(t(as.matrix(data8)))
 type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=37)
 df <- data.frame(time=time,point=point,type=type)
 df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=11, Randomization=4")+facet_wrap(~type)+geom_vline(xintercept=29)
-
+p8 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=11, Randomization=4")+facet_wrap(~type)+geom_vline(xintercept=29)
+ggarrange(p7,p8,ncol=2,nrow=1)
 ```
 
+\newpage
+# Comment on these EDAs
 
-```{r}
-library(dplyr)
-#Choose problem
-newdata <- data[which(data$Problem=="Average Anxiety Today"),]
-newdata <- newdata[,-c(1:3)]
-p <- as.matrix(newdata)
-y <- c(t(p))
-y <- y[!is.na(y)] 
-t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
-T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
-ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
-m <- data.frame(y,ID,t,T)
-```
+After analyzing the plots, several noteworthy observations can be made:
 
+1. The score of Q6 differs from the other questions. While the scores of other questions increase, the score of Q6 decreases.
+
+2. The treatment appears to be ineffective for many questions. For instance, Q8 shows no change in trend for six patients. Moreover, the treatment may even worsen the condition, as seen in the first patient's Q2 score, which increased after treatment.
+
+3. Due to the limited dataset consisting of only eight patients with a scoring scale ranging from 0-8, it is challenging to create effective models and it may not be possible to develop highly accurate models. Nevertheless, efforts can be made to create models despite these limitations.
