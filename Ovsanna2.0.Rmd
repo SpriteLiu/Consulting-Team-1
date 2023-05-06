@@ -1,0 +1,599 @@
+---
+title: "Ovsanna"
+author: "Hsueh-Pin Liu, Nuo Chen, Tao Guo, Huifei Xu"
+date: "`r Sys.Date()`"
+output: 
+    pdf_document:
+        latex_engine: xelatex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Previous steps
+
+Before making the EDAs, I first changed the variable's names of the .xlsx file to make it easier to import, so the new .xlsx file is different from the original one.
+
+```{r include=F}
+library(ggplot2)
+library(readxl)
+library(tidyverse)
+library(ggpubr)
+library(lmerTest)
+library(stats)
+library(ordinal)
+library(nlme)
+library(dplyr)
+data<- read_excel("Daily Monitor Tracking Log.xlsx")
+```
+
+# EDAs
+
+According to the data, there are 2 "two-week" patients, 4"three-week" patients and 2 "four-week" patients. I make plots for each patient's each question and the black line seperates the pre-treatment and treatment time.
+
+```{r Fig1, fig.cap="2-week pre-treatment patients",echo=F,warning=F,fig.height=4,fig.width=10}
+#Two weeks
+#1
+data1 <- data[c(1:8),]
+data1 <- data1[, colSums(is.na(data1)) != nrow(data1)]
+data1 <- data1[,-c(1:3)]
+x <- rep(NA,8)
+data1 <- cbind(data1[,c(1:14)], x, data1[,c(15:22)])
+time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+point <- c(t(as.matrix(data1)))
+type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=23)
+df <- data.frame(time=time,point=point,type=type)
+df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p1 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=1, Randomization=2")+facet_wrap(~type)+geom_vline(xintercept=15)
+
+#2
+
+data2 <- data[c(17:24),]
+data2 <- data2[, colSums(is.na(data2)) != nrow(data2)]
+data2 <- data2[,-c(1:3)]
+x <- rep(NA,8)
+data2 <- cbind(data2[,c(1:14)], x, data2[,c(15:22)])
+time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+point <- c(t(as.matrix(data2)))
+type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=23)
+df <- data.frame(time=time,point=point,type=type)
+df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p2 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=3, Randomization=2")+facet_wrap(~type)+geom_vline(xintercept=15)
+ggarrange(p1,p2,ncol=2,nrow=1)
+```
+
+```{r Fig2, fig.cap="3-week pre-treatment patients",echo=F,warning=F,fig.height=8,fig.width=10}
+#Three weeks
+#3
+data3 <- data[c(9:16),]
+data3 <- data3[, colSums(is.na(data3)) != nrow(data3)]
+data3 <- data3[,-c(1:3)]
+x <- rep(NA,8)
+data3 <- cbind(data3[,c(1:21)], x, data3[,c(22:29)])
+time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+point <- c(t(as.matrix(data3)))
+type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=30)
+df <- data.frame(time=time,point=point,type=type)
+df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p3 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=5, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
+
+#4
+data4 <- data[c(33:40),]
+data4 <- data4[, colSums(is.na(data4)) != nrow(data4)]
+data4 <- data4[,-c(1:3)]
+x <- rep(NA,8)
+data4 <- cbind(data4[,c(1:21)], x, data4[,c(22:29)])
+time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+point <- c(t(as.matrix(data4)))
+type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=30)
+df <- data.frame(time=time,point=point,type=type)
+df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p4 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=9, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
+
+#5
+data5 <- data[c(41:48),]
+data5 <- data5[, colSums(is.na(data5)) != nrow(data5)]
+data5 <- data5[,-c(1:3)]
+x <- rep(NA,8)
+data5 <- cbind(data5[,c(1:21)], x, data5[,c(22:29)])
+time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+point <- c(t(as.matrix(data5)))
+type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=30)
+df <- data.frame(time=time,point=point,type=type)
+df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p5 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=12, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
+
+#6
+data6 <- data[c(57:64),]
+data6 <- data6[, colSums(is.na(data6)) != nrow(data6)]
+data6 <- data6[,-c(1:3)]
+x <- rep(NA,8)
+data6 <- cbind(data6[,c(1:21)], x, data6[,c(22:29)])
+time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+point <- c(t(as.matrix(data6)))
+type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=30)
+df <- data.frame(time=time,point=point,type=type)
+df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p6 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=17, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
+ggarrange(p3,p4,p5,p6,ncol=2,nrow=2)
+```
+
+```{r Fig3, fig.cap="4-week pre-treatment patients",echo=F,warning=F,fig.height=4,fig.width=10}
+#Four weeks
+#7
+data7 <- data[c(25:32),]
+data7 <- data7[, colSums(is.na(data7)) != nrow(data7)]
+data7 <- data7[,-c(1:3)]
+x <- rep(NA,8)
+data7 <- cbind(data7[,c(1:28)], x, data7[,c(29:36)])
+time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+point <- c(t(as.matrix(data7)))
+type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=37)
+df <- data.frame(time=time,point=point,type=type)
+df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p7 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=6, Randomization=4")+facet_wrap(~type)+geom_vline(xintercept=29)
+
+#8
+data8 <- data[c(49:56),]
+data8 <- data8[,-c(1:3)]
+x <- rep(NA,8)
+data8 <- cbind(data8[,c(1:28)], x, data8[,c(29:36)])
+time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+point <- c(t(as.matrix(data8)))
+type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=37)
+df <- data.frame(time=time,point=point,type=type)
+df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p8 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=11, Randomization=4")+facet_wrap(~type)+geom_vline(xintercept=29)
+ggarrange(p7,p8,ncol=2,nrow=1)
+```
+
+\newpage
+# Comment on these EDAs
+
+After analyzing the plots, several noteworthy observations can be made:
+
+1. The score of Q6 differs from the other questions. While the scores of other questions increase, the score of Q6 decreases.
+
+2. The treatment appears to be ineffective for many questions. For instance, Q8 shows no change in trend for six patients. Moreover, the treatment may even worsen the condition, as seen in the first patient's Q2 score, which increased after treatment.
+
+3. Due to the limited dataset consisting of only eight patients with a scoring scale ranging from 0-8, it is challenging to create effective models and it may not be possible to develop highly accurate models. Nevertheless, efforts can be made to create models despite these limitations.
+
+
+# Methods
+
+By the previous EDA part, we can see the data has some traits. 
+
+First, as different patients may have different feeling about the anxiety level for pre-treatment and post-treatment. To analyze the fixed effect and random effect, the multilevel regression model is the best way to solve it. 
+
+Second, the data is actually collected over time. So for such a time series data, we can check the acf plot to see if there is a trend or seasonality. 
+
+Third, both the question score `y` and the time `t` are ordinal, and the indicator variable Treatment `T` is binary. So we also need to check the data by fitting a ordinal regression model and seeing the performance. However the ordinal regression model has the limitation that it is hard for the model to fit the data between different groups. And the model fit is bad indeed. So this model will not be shown in next part.
+
+We expect that, after fitting these models, there are patterns of increasing scores in Question "Max Anxiety Today", "Confident in My Ability to Handle Situations", "Push Away Thoughts and Feelings I Do Not Like", and decreasing scores in Question "Average Anxiety Today", "Scares Me when I am Nervous", "Jump to Negative Conclusions", "Avg Avoidance of Thoughts, Situations, Sensations". For Question "Physical Feelings in My Body Scare Me", the daily scores are all stable among all patients so we consider not to analyze this question. 
+
+## Result
+
+We fit separated model for each problem because different problem may have different effect. Although the data is actually ordinal but 9 points is enough to do linear model, and it is more easier to diagnose linear model. We The result of most model is same with what we found in EDA, the score of patient is same after making treatment. For instance, in most problem, only the intercept is significant.
+
+|             | Estimate  | Std. Error |   df   | t value | Pr(\>\|t\|) |
+|:-----------:|:---------:|:----------:|:------:|:-------:|:-----------:|
+| (Intercept) | 2.136820  |  0.575868  | 7.9303 |  -28.2  | 0.006 \*\*  |
+|      T      | 0.197230  |  0.747232  | 222.20 |  0.264  |   0.79206   |
+|      t      | -0.001098 |  0.012335  | 221.08 | -0.089  |   0.92916   |
+|     T:t     | -0.003483 |  0.029450  | 221.41 | -0.118  |   0.90596   |
+
+```{r, echo=FALSE}
+
+#Choose problem
+newdata <- data[which(data$Problem=="Average Anxiety Today"),]
+newdata <- newdata[,-c(1:3)]
+p <- as.matrix(newdata)
+y <- c(t(p))
+y <- y[!is.na(y)] 
+t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
+T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
+m <- data.frame(y,ID,t,T)
+m$y <- as.numeric(y)
+```
+
+```{r, echo=FALSE,results='hide'}
+model2 <- lmer(y ~ T + t*T + (1 | as.factor(ID)), data = m)
+m$y_pred <- fitted(model2)
+summary(model2) 
+```
+
+```{r, echo=FALSE}
+vline_data <- data.frame(ID = c(1,3,5,6,9,11,12,17),  xintercept=c(15,15,22,29,22,29,22,22) )
+```
+
+```{r,echo=FALSE,fig.height=5, fig.width=8}
+ggplot(m, mapping = aes(x=t, y=y_pred, group=as.factor(ID))) +
+  geom_line()+geom_line(aes(x=t, y=y, group=as.factor(ID), colour=as.factor(ID))) +facet_wrap(~ID)+ggtitle("Average Anxiety Today")+geom_vline(data = vline_data, aes(xintercept = xintercept, group = as.factor(ID)), linetype = "dashed")
+```
+
+<br> After fitting model, we do the auto-correlation analysis. From acf plot, there could be temporal effect. Therefore we try to use time series model (AR model). After fitting with AR model, the acf plot almost did not change for each problem. temporal effect may be too small. <br>
+
+```{r, echo=FALSE,fig.height=5, fig.width=8,}
+ m$resid <- resid(model2)
+acf(m[m$ID==1,]$resid)
+```
+
+```{r,include=FALSE}
+fm1 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m)
+summary(fm1)
+```
+
+After fitting with AR model, the acf plot almost did not change for each problem. temporal effect may be too small.
+
+```{r,echo=FALSE,fig.height=5, fig.width=8,}
+m$resid <- resid(fm1)
+acf(m[m$ID==1,]$resid)
+```
+
+```{r,echo=FALSE,include=FALSE}
+m$y <- as.factor(m$y)
+model <- clmm(ordered(y) ~ T + t*T + (1 | as.factor(ID)), data = m)
+summary(model)
+
+```
+
+There are only two question the treatment seem to effects to patients, Scares Me when I am Nervous and Confident in My Ability to Handle Situations. However,for Scares Me when I am Nervous and Confident, after using AR models, this effect disappeared. From plot of this question, we could not find significant decreasing of score after taking treatment, which are correspond the result of AR model
+
+```{r,echo=FALSE}
+newdata <- data[which(data$Problem=="Scares Me when I am Nervous"),]
+newdata <- newdata[,-c(1:3)]
+p <- as.matrix(newdata)
+y <- c(t(p))
+y <- y[!is.na(y)] 
+t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
+T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
+m4 <- data.frame(y,ID,t,T)
+m4$y <- as.numeric(y)
+```
+
+|             | Estimate | Std. Error |    df     | t value |  Pr(\>\|t\|)   |
+|:-----------:|:--------:|:----------:|:---------:|:-------:|:--------------:|
+| (Intercept) | 2.16590  |  0.81736   |  7.42557  |  2.650  |  0.031243 \*   |
+|      T      | 2.04479  |  0.72973   | 221.06774 |  2.802  |  0.005527\*\*  |
+|      t      | -0.04548 |  0.01204   | 220.51531 | -3.778  | 0.000203\*\*\* |
+|     T:t     | -0.05264 |  0.02874   | 220.67366 | -1.831  |    0.068379    |
+
+```{r,echo=FALSE}
+fm5 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m4)
+d <- summary(fm5)
+d$tTable
+```
+
+```{r, echo =FALSE, include=FALSE}
+model6 <- lmer(y ~ T+ t*T + (1 | as.factor(ID)), data = m4)
+m4$y_pred <- fitted(model6)
+summary(model6)
+```
+
+```{r,echo=FALSE,fig.height=5, fig.width=8}
+ggplot(m4, mapping = aes(x=t, y=y_pred, group=as.factor(ID))) +
+  geom_line()+geom_line(aes(x=t, y=y, group=as.factor(ID), colour=as.factor(ID))) +facet_wrap(~ID)+ggtitle("Scares Me when I am Nervous")+geom_vline(data = vline_data, aes(xintercept = xintercept, group = as.factor(ID)), linetype = "dashed")
+```
+
+```{r,echo=FALSE,include=FALSE}
+m4$resid <- resid(model6)
+acf(m4[m4$ID==1,]$resid)
+```
+
+```{r,echo=FALSE,include=FALSE}
+fm5 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m4)
+d <- summary(fm5)
+d$tTable
+```
+
+```{r,echo=FALSE,include=FALSE}
+m4$resid <- resid(fm5)
+acf(m4[m4$ID==1,]$resid)
+```
+
+```{r,echo=FALSE,include=FALSE}
+m4$y <- as.factor(m4$y)
+ordnal4 <- clmm(ordered(y) ~ T+t*T + (1 | as.factor(ID)), data = m4)
+summary(ordnal4)
+```
+
+The result of Confident in My Ability to Handle Situations is much better than result of Scares Me when I am Nervous. The plot also correspond to result of model. Both T and T:t are significant. Form plot and fitted line, we could find some patient increase after treatment.
+Finally, we also check with mixed ordinal model because data is ordinal, but compare with mixed ordinal model is hard to visualize. We put the all result in appendix. 
+\newpage
+
+```{r,echo=FALSE,include=FALSE}
+newdata <- data[which(data$Problem=="Confident in My Ability to Handle Situations"),]
+newdata <- newdata[,-c(1:3)]
+p <- as.matrix(newdata)
+y <- c(t(p))
+y <- y[!is.na(y)] 
+t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
+T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
+m5 <- data.frame(y,ID,t,T)
+m5$y <- as.numeric(y)
+```
+|             | Estimate  | Std. Error |     df     | t value |  Pr(\>\|t\|)   |
+|:-----------:|:---------:|:----------:|:----------:|:-------:|:--------------:|
+| (Intercept) | 3.631392  |  0.728410  |  7.451728  |  4.985  |  0.00132\*\*   |
+|      T      | -2.978075 |  0.669260  | 221.129847 | -4.450  | 1.36e-05\*\*\* |
+|      t      | 0.003036  |  0.011040  | 220.545842 |  0.275  |    0.78354     |
+|     T:t     | 0.118754  |  0.026362  | 220.713363 |  4.505  | 1.08e-05\*\*\* |
+```{r,echo=FALSE, include=FALSE}
+model7 <- lmer(y ~ T+ t*T + (1 | as.factor(ID)), data = m5)
+m5$y_pred <- fitted(model7)
+summary(model7)
+```
+
+```{r, echo=FALSE,fig.height=5, fig.width=8}
+ggplot(m5, mapping = aes(x=t, y=y_pred, group=as.factor(ID))) +
+  geom_line()+geom_line(aes(x=t, y=y, group=as.factor(ID), colour=as.factor(ID))) +facet_wrap(~ID)+ggtitle("Confident in My Ability to Handle Situations")+geom_vline(data = vline_data, aes(xintercept = xintercept, group = as.factor(ID)), linetype = "dashed")
+```
+
+```{r,echo=FALSE,include=FALSE}
+m5$resid <- resid(model7)
+acf(m5[m5$ID==9,]$resid)
+```
+
+```{r,echo=FALSE,include=FALSE}
+fm6 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m5)
+summary(fm6)
+```
+
+```{r,echo=FALSE,include=FALSE}
+m5$resid <- resid(fm6)
+acf(m5[m5$ID==9,]$resid)
+```
+
+```{r,echo=FALSE,include=FALSE}
+m5$y <- as.factor(m5$y)
+ordnal5 <- clmm(ordered(y) ~ T+t*T + (1 | as.factor(ID)), data = m5)
+summary(ordnal5)
+```
+
+```{r,echo=FALSE,include=FALSE}
+newdata <- data[which(data$Problem=="Push Away Thoughts and Feelings I Do Not Like"),]
+newdata <- newdata[,-c(1:3)]
+p <- as.matrix(newdata)
+y <- c(t(p))
+y <- y[!is.na(y)] 
+t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
+T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
+m6 <- data.frame(y,ID,t,T)
+m6$y <- as.numeric(y)
+```
+
+#Discussion 
+
+The results of the ordinal regression model developed to assess the effectiveness of the treatment in improving anxiety among adolescents based on the survey questions scored on an ordinal scale from 0 to 8 should be interpreted with caution due to several limitations. 
+
+First and foremost, the sample size of the dataset is extremely small, consisting of only 8 people's data. This small sample size may limit the statistical power of the model and affect the accuracy of its predictions. Additionally, the small sample size may not be representative of the entire population of adolescents experiencing anxiety issues, which may limit the generalizability of the model's findings. 
+
+Second, the assumption of equal intervals between levels of the ordinal scale may not hold true in reality. The difference between each level of the ordinal scale may not be equal, which could affect the accuracy of the model's predictions. 
+
+Third, the model assumes a linear relationship between the independent and dependent variables. While ordinal regression models can capture nonlinear relationships between variables, the linear model may not accurately represent the relationship between the survey questions and anxiety symptoms. Other models, such as polynomial regression or spline regression, may be more appropriate for capturing nonlinear relationships. 
+
+Additionally, the survey questions are self-reported and may not accurately reflect the severity or frequency of anxiety symptoms. Furthermore, there may be other factors that contribute to anxiety symptoms that are not captured by the survey questions, such as genetic or environmental factors. 
+
+Overall, while the ordinal regression model developed in this project provides some initial insights into the effectiveness of the treatment in improving anxiety among adolescents based on the survey questions scored on an ordinal scale from 0 to 8, the above limitations should be taken into consideration when interpreting the results. Future research with a larger sample size and more comprehensive measures of anxiety symptoms may be necessary to provide more reliable and generalizable findings.
+
+\newpage
+## Appendix 
+```{r,echo=FALSE}
+model8 <- lmer(y ~ T+ t*T + (1 | as.factor(ID)), data = m6)
+m6$y_pred <- fitted(model8)
+summary(model8)
+```
+
+```{r,echo=FALSE}
+ggplot(m6, mapping = aes(x=t, y=y_pred, group=as.factor(ID))) +
+  geom_line()+geom_line(aes(x=t, y=y, group=as.factor(ID), colour=as.factor(ID))) +facet_wrap(~ID)+ggtitle("Push Away Thoughts and Feelings I Do Not Like")+geom_vline(data = vline_data, aes(xintercept = xintercept, group = as.factor(ID)), linetype = "dashed")
+```
+
+```{r,echo=FALSE,include=FALSE}
+m6$resid <- resid(model8)
+acf(m6[m6$ID==9,]$resid)
+```
+
+```{r,echo=FALSE}
+fm7 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m6)
+summary(fm7)
+```
+
+```{r,echo=FALSE,include=FALSE}
+m6$resid <- resid(fm7)
+acf(m6[m6$ID==9,]$resid)
+```
+
+```{r,echo=FALSE}
+m6$y <- factor(m6$y, ordered = TRUE)
+ordnal6 <- clmm(y ~ T+ t*T + (1 | as.factor(ID)), data = m6)
+summary(ordnal6)
+```
+
+```{r,echo=FALSE,include=FALSE}
+newdata <- data[which(data$Problem=="Physical Feelings in My Body Scare Me"),]
+newdata <- newdata[,-c(1:3)]
+p <- as.matrix(newdata)
+y <- c(t(p))
+y <- y[!is.na(y)] 
+t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
+T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
+m7 <- data.frame(y,ID,t,T)
+m7$y <- as.numeric(y)
+```
+
+```{r,echo=FALSE}
+model9 <- lmer(y ~ T+ t*T + (1 | as.factor(ID)), data = m7)
+m7$y_pred <- fitted(model9)
+summary(model9)
+```
+
+```{r,echo=FALSE}
+ggplot(m7, mapping = aes(x=t, y=y_pred, group=as.factor(ID))) +
+  geom_line()+geom_line(aes(x=t, y=y, group=as.factor(ID), colour=as.factor(ID))) +facet_wrap(~ID)+ggtitle("Push Away Thoughts and Feelings I Do Not Like")+geom_vline(data = vline_data, aes(xintercept = xintercept, group = as.factor(ID)), linetype = "dashed")
+```
+
+```{r,echo=FALSE,include=FALSE}
+m7$resid <- resid(model9)
+acf(m7[m7$ID==1,]$resid)
+```
+
+```{r,echo=FALSE}
+fm8 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m7)
+summary(fm8)
+```
+
+```{r,echo=FALSE,include=FALSE}
+m7$resid <- resid(fm8)
+acf(m7[m7$ID==1,]$resid)
+```
+
+```{r,echo=FALSE}
+m7$y <- factor(m7$y, ordered = TRUE)
+ordnal7 <- clmm(y ~ T+ t*T + (1 | as.factor(ID)), data = m7)
+summary(ordnal7)
+```
+
+```{r,echo=FALSE,echo=FALSE,include=FALSE}
+newdata <- data[which(data$Problem=="Max Anxiety Today"),]
+newdata <- newdata[,-c(1:3)]
+p <- as.matrix(newdata)
+y <- c(t(p))
+y <- y[!is.na(y)] 
+t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
+T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
+m1 <- data.frame(y,ID,t,T)
+m1$y <- as.numeric(y)
+```
+
+```{r,echo=TRUE,echo=FALSE}
+model3 <- lmer(y ~ T + t*T + (1 | as.factor(ID)), data = m1)
+m1$y_pred <- fitted(model3)
+summary(model3)
+```
+
+```{r,echo=FALSE}
+ggplot(m1, mapping = aes(x=t, y=y_pred, group=as.factor(ID))) +
+  geom_line()+geom_line(aes(x=t, y=y, group=as.factor(ID), colour=as.factor(ID))) +facet_wrap(~ID)+ggtitle("Max Anxiety Today")+geom_vline(data = vline_data, aes(xintercept = xintercept, group = as.factor(ID)), linetype = "dashed")
+```
+
+```{r ,echo=FALSE,include=FALSE}
+m1$resid <- resid(model3)
+acf(m1[m1$ID==1,]$resid)
+```
+
+```{r ,echo=FALSE}
+fm2 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m1)
+summary(fm2)
+```
+
+```{r ,echo=FALSE,include=FALSE}
+m1$resid <- resid(fm2) 
+acf(m1[m1$ID==1,]$resid)
+```
+
+```{r ,echo=FALSE}
+m1$y <- as.factor(m1$y)
+ordnal1 <- clmm(ordered(y) ~ T+t*T + (1 | as.factor(ID)), data = m1)
+summary(ordnal1)
+```
+
+```{r ,echo=FALSE,include=FALSE}
+newdata <- data[which(data$Problem=="Jump to Negative Conclusions"),]
+newdata <- newdata[,-c(1:3)]
+p <- as.matrix(newdata)
+y <- c(t(p))
+y <- y[!is.na(y)] 
+t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
+T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
+m3 <- data.frame(y,ID,t,T)
+m3$y <- as.numeric(y)
+```
+
+```{r ,echo=FALSE}
+model5 <- lmer(y ~ T + t*T + (1 | as.factor(ID)), data = m3)
+m3$y_pred <- fitted(model5)
+summary(model5)
+```
+
+```{r ,echo=FALSE}
+ggplot(m3, mapping = aes(x=t, y=y_pred, group=as.factor(ID))) +
+  geom_line()+geom_line(aes(x=t, y=y, group=as.factor(ID), colour=as.factor(ID))) +facet_wrap(~ID)+ggtitle("Jump to Negative Conclusions")+geom_vline(data = vline_data, aes(xintercept = xintercept, group = as.factor(ID)), linetype = "dashed")
+```
+
+```{r ,echo=FALSE,include=FALSE}
+m3$resid <- resid(model5)
+acf(m3[m3$ID==11,]$resid)
+```
+
+```{r,echo=FALSE}
+fm4 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m3)
+b <- summary(fm4)
+b$tTable
+```
+
+```{r,echo=FALSE,include=FALSE}
+m3$resid <- resid(fm4)
+acf(m3[m3$ID==11,]$resid)
+```
+
+```{r,echo=FALSE}
+m3$y <- as.factor(m3$y)
+ordnal3 <- clmm(ordered(y) ~ T+t*T + (1 | as.factor(ID)), data = m3)
+summary(ordnal3)
+```
+
+```{r ,echo=FALSE,include=FALSE}
+newdata <- data[which(data$Problem=="Avg Avoidance of Thoughts, Situatoins, Sensations"),]
+newdata <- newdata[,-c(1:3)]
+p <- as.matrix(newdata)
+y <- c(t(p))
+y <- y[!is.na(y)] 
+t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
+T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
+m2 <- data.frame(y,ID,t,T)
+m2$y <- as.numeric(y)
+```
+
+```{r,echo=FALSE}
+model4 <- lmer(y ~ T + t*T + (1 | as.factor(ID)), data = m2)
+m2$y_pred <- fitted(model4)
+summary(model4)
+```
+
+```{r ,echo=FALSE}
+ggplot(m2, mapping = aes(x=t, y=y_pred, group=as.factor(ID))) +
+  geom_line()+geom_line(aes(x=t, y=y, group=as.factor(ID), colour=as.factor(ID))) +facet_wrap(~ID)+ggtitle("Avg Avoidance of Thoughts, Situatoins, Sensations")+geom_vline(data = vline_data, aes(xintercept = xintercept, group = as.factor(ID)), linetype = "dashed")
+```
+
+```{r ,echo=FALSE,include=FALSE}
+m2$resid <- resid(model4)
+acf(m2[m2$ID==11,]$resid)
+```
+
+```{r,echo=FALSE}
+fm3 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m2)
+a <-summary(fm3)
+
+```
+
+```{r,echo=FALSE,include=FALSE}
+m2$resid <- resid(fm3)
+acf(m2[m2$ID==11,]$resid)
+```
+
+```{r ,echo=FALSE}
+m2$y <- as.factor(m2$y)
+ordnal2 <- clmm(ordered(y) ~ T+t*T + (1 | as.factor(ID)), data = m2)
+summary(ordnal2)
+```
+
