@@ -46,12 +46,12 @@ data1 <- data1[, colSums(is.na(data1)) != nrow(data1)]
 data1 <- data1[,-c(1:3)]
 x <- rep(NA,8)
 data1 <- cbind(data1[,c(1:14)], x, data1[,c(15:22)])
-time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
-point <- c(t(as.matrix(data1)))
-type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=23)
-df <- data.frame(time=time,point=point,type=type)
-df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-p1 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=1, Randomization=2")+facet_wrap(~type)+geom_vline(xintercept=15)
+Time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+Score <- c(t(as.matrix(data1)))
+Question <- rep(c("Question1","Question2","Question3","Question4","Question5","Question6","Question7","Question8"),each=23)
+df <- data.frame(Time=Time,Score=Score,Question=Question)
+df$Time <- factor(df$Time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p1 <- ggplot(data=df,mapping=aes(x=Time,y=Score,group=Question,colour=Question))+geom_line()+geom_point()+theme(axis.text.x=element_blank())+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=1, Randomization=2")+facet_wrap(~Question)+geom_vline(xintercept=15)
 
 #2
 
@@ -60,12 +60,12 @@ data2 <- data2[, colSums(is.na(data2)) != nrow(data2)]
 data2 <- data2[,-c(1:3)]
 x <- rep(NA,8)
 data2 <- cbind(data2[,c(1:14)], x, data2[,c(15:22)])
-time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
-point <- c(t(as.matrix(data2)))
-type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=23)
-df <- data.frame(time=time,point=point,type=type)
-df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-p2 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=3, Randomization=2")+facet_wrap(~type)+geom_vline(xintercept=15)
+Time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+Score <- c(t(as.matrix(data2)))
+Question <- rep(c("Question1","Question2","Question3","Question4","Question5","Question6","Question7","Question8"),each=23)
+df <- data.frame(Time=Time,Score=Score,Question=Question)
+df$Time <- factor(df$Time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p2 <- ggplot(data=df,mapping=aes(x=Time,y=Score,group=Question,colour=Question))+geom_line()+geom_point()+theme(axis.text.x=element_blank())+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=3, Randomization=2")+facet_wrap(~Question)+geom_vline(xintercept=15)
 ggarrange(p1,p2,ncol=2,nrow=1)
 ```
 
@@ -77,12 +77,12 @@ data3 <- data3[, colSums(is.na(data3)) != nrow(data3)]
 data3 <- data3[,-c(1:3)]
 x <- rep(NA,8)
 data3 <- cbind(data3[,c(1:21)], x, data3[,c(22:29)])
-time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
-point <- c(t(as.matrix(data3)))
-type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=30)
-df <- data.frame(time=time,point=point,type=type)
-df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-p3 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=5, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
+Time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+Score <- c(t(as.matrix(data3)))
+Question <- rep(c("Question1","Question2","Question3","Question4","Question5","Question6","Question7","Question8"),each=30)
+df <- data.frame(Time=Time,Score=Score,Question=Question)
+df$Time <- factor(df$Time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p3 <- ggplot(data=df,mapping=aes(x=Time,y=Score,group=Question,colour=Question))+geom_line()+geom_point()+theme(axis.text.x=element_blank())+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=5, Randomization=3")+facet_wrap(~Question)+geom_vline(xintercept=22)
 
 #4
 data4 <- data[c(33:40),]
@@ -90,12 +90,12 @@ data4 <- data4[, colSums(is.na(data4)) != nrow(data4)]
 data4 <- data4[,-c(1:3)]
 x <- rep(NA,8)
 data4 <- cbind(data4[,c(1:21)], x, data4[,c(22:29)])
-time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
-point <- c(t(as.matrix(data4)))
-type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=30)
-df <- data.frame(time=time,point=point,type=type)
-df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-p4 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=9, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
+Time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+Score <- c(t(as.matrix(data4)))
+Question <- rep(c("Question1","Question2","Question3","Question4","Question5","Question6","Question7","Question8"),each=30)
+df <- data.frame(Time=Time,Score=Score,Question=Question)
+df$Time <- factor(df$Time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p4 <- ggplot(data=df,mapping=aes(x=Time,y=Score,group=Question,colour=Question))+geom_line()+geom_point()+theme(axis.text.x=element_blank())+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=9, Randomization=3")+facet_wrap(~Question)+geom_vline(xintercept=22)
 
 #5
 data5 <- data[c(41:48),]
@@ -103,12 +103,12 @@ data5 <- data5[, colSums(is.na(data5)) != nrow(data5)]
 data5 <- data5[,-c(1:3)]
 x <- rep(NA,8)
 data5 <- cbind(data5[,c(1:21)], x, data5[,c(22:29)])
-time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
-point <- c(t(as.matrix(data5)))
-type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=30)
-df <- data.frame(time=time,point=point,type=type)
-df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-p5 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=12, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
+Time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+Score <- c(t(as.matrix(data5)))
+Question <- rep(c("Question1","Question2","Question3","Question4","Question5","Question6","Question7","Question8"),each=30)
+df <- data.frame(Time=Time,Score=Score,Question=Question)
+df$Time <- factor(df$Time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p5 <- ggplot(data=df,mapping=aes(x=Time,y=Score,group=Question,colour=Question))+geom_line()+geom_point()+theme(axis.text.x=element_blank())+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=12, Randomization=3")+facet_wrap(~Question)+geom_vline(xintercept=22)
 
 #6
 data6 <- data[c(57:64),]
@@ -116,12 +116,12 @@ data6 <- data6[, colSums(is.na(data6)) != nrow(data6)]
 data6 <- data6[,-c(1:3)]
 x <- rep(NA,8)
 data6 <- cbind(data6[,c(1:21)], x, data6[,c(22:29)])
-time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
-point <- c(t(as.matrix(data6)))
-type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=30)
-df <- data.frame(time=time,point=point,type=type)
-df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-p6 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=17, Randomization=3")+facet_wrap(~type)+geom_vline(xintercept=22)
+Time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+Score <- c(t(as.matrix(data6)))
+Question <- rep(c("Question1","Question2","Question3","Question4","Question5","Question6","Question7","Question8"),each=30)
+df <- data.frame(Time=Time,Score=Score,Question=Question)
+df$Time <- factor(df$Time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p6 <- ggplot(data=df,mapping=aes(x=Time,y=Score,group=Question,colour=Question))+geom_line()+geom_point()+theme(axis.text.x=element_blank())+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=17, Randomization=3")+facet_wrap(~Question)+geom_vline(xintercept=22)
 ggarrange(p3,p4,p5,p6,ncol=2,nrow=2)
 ```
 
@@ -133,24 +133,24 @@ data7 <- data7[, colSums(is.na(data7)) != nrow(data7)]
 data7 <- data7[,-c(1:3)]
 x <- rep(NA,8)
 data7 <- cbind(data7[,c(1:28)], x, data7[,c(29:36)])
-time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
-point <- c(t(as.matrix(data7)))
-type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=37)
-df <- data.frame(time=time,point=point,type=type)
-df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-p7 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=6, Randomization=4")+facet_wrap(~type)+geom_vline(xintercept=29)
+Time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+Score <- c(t(as.matrix(data7)))
+Question <- rep(c("Question1","Question2","Question3","Question4","Question5","Question6","Question7","Question8"),each=37)
+df <- data.frame(Time=Time,Score=Score,Question=Question)
+df$Time <- factor(df$Time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p7 <- ggplot(data=df,mapping=aes(x=Time,y=Score,group=Question,colour=Question))+geom_line()+geom_point()+theme(axis.text.x=element_blank())+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=6, Randomization=4")+facet_wrap(~Question)+geom_vline(xintercept=29)
 
 #8
 data8 <- data[c(49:56),]
 data8 <- data8[,-c(1:3)]
 x <- rep(NA,8)
 data8 <- cbind(data8[,c(1:28)], x, data8[,c(29:36)])
-time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
-point <- c(t(as.matrix(data8)))
-type <- rep(c("P1","P2","P3","P4","P5","P6","P7","P8"),each=37)
-df <- data.frame(time=time,point=point,type=type)
-df$time <- factor(df$time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
-p8 <- ggplot(data=df,mapping=aes(x=time,y=point,group=type,colour=type))+geom_line()+geom_point()+theme(axis.text.x=element_text(angle=45))+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=11, Randomization=4")+facet_wrap(~type)+geom_vline(xintercept=29)
+Time <- rep(c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"),8)
+Score <- c(t(as.matrix(data8)))
+Question <- rep(c("Question1","Question2","Question3","Question4","Question5","Question6","Question7","Question8"),each=37)
+df <- data.frame(Time=Time,Score=Score,Question=Question)
+df$Time <- factor(df$Time,levels=c("W1D1","W1D2","W1D3","W1D4","W1D5","W1D6","W1D7","W2D1","W2D2","W2D3","W2D4","W2D5","W2D6","W2D7","W3D1","W3D2","W3D3","W3D4","W3D5","W3D6","W3D7","W4D1","W4D2","W4D3","W4D4","W4D5","W4D6","W4D7","Split","TrD1","TrD2","TrD3","TrD4","TrD5","TrD6","TrD7","TrD8"))
+p8 <- ggplot(data=df,mapping=aes(x=Time,y=Score,group=Question,colour=Question))+geom_line()+geom_point()+theme(axis.text.x=element_blank())+scale_y_continuous(limits = c(0, 8))+ggtitle("ID=11, Randomization=4")+facet_wrap(~Question)+geom_vline(xintercept=29)
 ggarrange(p7,p8,ncol=2,nrow=1)
 ```
 
@@ -160,9 +160,9 @@ ggarrange(p7,p8,ncol=2,nrow=1)
 
 After analyzing the plots, several noteworthy observations can be made:
 
-1.  The score of Q6 differs from the other questions. While the scores of other questions increase, the score of Q6 decreases.
+1.The score of Q6, which is"Confident in My Ability to Handle Situations" differs from the other questions. While the scores of other questions increase, the score of Q6 decreases.
 
-2.  The treatment appears to be ineffective for many questions. For instance, Q8 shows no change in trend for six patients. Moreover, the treatment may even worsen the condition, as seen in the first patient's Q2 score, which increased after treatment.
+2.  The treatment appears to be ineffective for many questions. For instance, Q8, which is "Physical Feelings in My Body Scare Me" shows no change in trend for six patients. Moreover, the treatment may even worsen the condition, as seen in the first patient's score of Q2, which is "Max Anxiety Today" increased after treatment.
 
 3.  Due to the limited dataset consisting of only eight patients with a scoring scale ranging from 0-8, it is challenging to create effective models and it may not be possible to develop highly accurate models. Nevertheless, efforts can be made to create models despite these limitations.
 
@@ -202,7 +202,7 @@ kable(data1, caption = "Linear Mixed Model for Average Anxiety Today ", col.name
 ```{r, echo=FALSE}
 
 #Choose problem
-newdata <- data[which(data$...3=="Average Anxiety Today"),]
+newdata <- data[which(data$Problem=="Average Anxiety Today"),]
 newdata <- newdata[,-c(1:3)]
 p <- as.matrix(newdata)
 y <- c(t(p))
@@ -258,7 +258,7 @@ summary(model)
 There are only two question the treatment seem to effects to patients, Scares Me when I am Nervous and Confident in My Ability to Handle Situations. However,for Scares Me when I am Nervous and Confident, after using AR models, this effect disappeared. From plot of this question, we could not find significant decreasing of score after taking treatment, which are correspond the result of AR model
 
 ```{r,echo=FALSE}
-newdata <- data[which(data$...3=="Scares Me when I am Nervous"),]
+newdata <- data[which(data$Problem=="Scares Me when I am Nervous"),]
 newdata <- newdata[,-c(1:3)]
 p <- as.matrix(newdata)
 y <- c(t(p))
@@ -340,7 +340,7 @@ summary(ordnal4)
 The result of Confident in My Ability to Handle Situations is much better than result of Scares Me when I am Nervous. The plot also correspond to result of model. Both T and T:t are significant. Form plot and fitted line, we could find some patient increase after treatment. Finally, we also checked with mixed ordinal model because data is ordinal, but compared with mixed ordinal model is hard to visualize. We put the all result in appendix.
 
 ```{r,echo=FALSE,include=FALSE}
-newdata <- data[which(data$...3=="Confident in My Ability to Handle Situations"),]
+newdata <- data[which(data$Problem=="Confident in My Ability to Handle Situations"),]
 newdata <- newdata[,-c(1:3)]
 p <- as.matrix(newdata)
 y <- c(t(p))
@@ -401,7 +401,7 @@ summary(ordnal5)
 ```
 
 ```{r,echo=FALSE,include=FALSE}
-newdata <- data[which(data$...3=="Push Away Thoughts and Feelings I Do Not Like"),]
+newdata <- data[which(data$Problem=="Push Away Thoughts and Feelings I Do Not Like"),]
 newdata <- newdata[,-c(1:3)]
 p <- as.matrix(newdata)
 y <- c(t(p))
@@ -413,15 +413,15 @@ m6 <- data.frame(y,ID,t,T)
 m6$y <- as.numeric(y)
 ```
 
-## Discussion
+# Discussion
 
 The results of the ordinal regression model developed to assess the effectiveness of the treatment in improving anxiety among adolescents based on the survey questions scored on an ordinal scale from 0 to 8 should be interpreted with caution due to several limitations.
 
 First and foremost, the sample size of the dataset is extremely small, consisting of only 8 people's data. This small sample size may limit the statistical power of the model and affect the accuracy of its predictions. Additionally, the small sample size may not be representative of the entire population of adolescents experiencing anxiety issues, which may limit the generalizability of the model's findings.
 
-Second, the assumption of equal intervals between levels of the ordinal scale may not hold true in reality. The difference between each level of the ordinal scale may not be equal, which could affect the accuracy of the model's predictions.
+Second, The key assumption in ordinal regression is that the effects of any explanatory variables are consistent or proportional across the different thresholds, which may not hold true in this case here for our survey responses. 
 
-Third, the model assumes a linear relationship between the independent and dependent variables. While ordinal regression models can capture nonlinear relationships between variables, the linear model may not accurately represent the relationship between the survey questions and anxiety symptoms. Other models, such as polynomial regression or spline regression, may be more appropriate for capturing nonlinear relationships.
+Third, the model assumes a linear relationship between the independent and dependent variables. While ordinal regression models can capture nonlinear relationships between variables, the linear model may not accurately represent the relationship between the survey questions and anxiety symptoms.
 
 Additionally, the survey questions are self-reported and may not accurately reflect the severity or frequency of anxiety symptoms. Furthermore, there may be other factors that contribute to anxiety symptoms that are not captured by the survey questions, such as genetic or environmental factors.
 
@@ -464,7 +464,7 @@ summary(ordnal6)
 ```
 
 ```{r,echo=FALSE,include=FALSE}
-newdata <- data[which(data$...3=="Physical Feelings in My Body Scare Me"),]
+newdata <- data[which(data$Problem=="Physical Feelings in My Body Scare Me"),]
 newdata <- newdata[,-c(1:3)]
 p <- as.matrix(newdata)
 y <- c(t(p))
@@ -509,7 +509,7 @@ summary(ordnal7)
 ```
 
 ```{r,echo=FALSE,echo=FALSE,include=FALSE}
-newdata <- data[which(data$...3=="Max Anxiety Today"),]
+newdata <- data[which(data$Problem=="Max Anxiety Today"),]
 newdata <- newdata[,-c(1:3)]
 p <- as.matrix(newdata)
 y <- c(t(p))
@@ -554,7 +554,7 @@ summary(ordnal1)
 ```
 
 ```{r ,echo=FALSE,include=FALSE}
-newdata <- data[which(data$...3=="Jump to Negative Conclusions"),]
+newdata <- data[which(data$Problem=="Jump to Negative Conclusions"),]
 newdata <- newdata[,-c(1:3)]
 p <- as.matrix(newdata)
 y <- c(t(p))
@@ -600,7 +600,7 @@ summary(ordnal3)
 ```
 
 ```{r ,echo=FALSE,include=FALSE}
-newdata <- data[which(data$...3=="Avg Avoidance of Thoughts, Situatoins, Sensations"),]
+newdata <- data[which(data$Problem=="Avg Avoidance of Thoughts, Situatoins, Sensations"),]
 newdata <- newdata[,-c(1:3)]
 p <- as.matrix(newdata)
 y <- c(t(p))
