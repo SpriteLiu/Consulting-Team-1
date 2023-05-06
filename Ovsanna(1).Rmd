@@ -11,7 +11,12 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Previous steps
+## Introduction
+
+Our client, Ovsanna Leyfer, who is from Psychological and Brain Sciences Department, want to develop an intensive (delivered over a course of one week) intervention to deliver CBT for youth aged 11-17 with ANY anxiety disorder to reduce the disability and impairment associated with anxiety disorders. Therefore, She created a multiple baseline study looking at treatment outcomes where eight participants were randomized to 2, 3, or 4 week baseline before starting a one-week treatment, and were asked to answer self-assessment questions every day during the pre-treatment and post-treatment. Our team's goal is to examine the potential indicators of treatment efficacy, as well as to give some statistical insights.
+
+
+## Previous steps
 
 Before making the EDAs, I first changed the variable's names of the .xlsx file to make it easier to import, so the new .xlsx file is different from the original one.
 
@@ -27,6 +32,7 @@ library(nlme)
 library(dplyr)
 data<- read_excel("Daily Monitor Tracking Log.xlsx")
 ```
+
 
 # EDAs
 
@@ -150,7 +156,7 @@ ggarrange(p7,p8,ncol=2,nrow=1)
 
 \newpage
 
-# Comment on these EDAs
+## Comment on these EDAs
 
 After analyzing the plots, several noteworthy observations can be made:
 
@@ -160,15 +166,16 @@ After analyzing the plots, several noteworthy observations can be made:
 
 3.  Due to the limited dataset consisting of only eight patients with a scoring scale ranging from 0-8, it is challenging to create effective models and it may not be possible to develop highly accurate models. Nevertheless, efforts can be made to create models despite these limitations.
 
-# Methods
+## Methods
 
 By the previous EDA part, we can see the data has some traits.
 
-First, as different patients may have different feeling about the anxiety level for pre-treatment and post-treatment. To analyze the fixed effect and random effect, the multilevel regression model is the best way to solve it.
 
-Second, the data is actually collected over time. So for such a time series data, we can check the acf plot to see if there is a trend or seasonality.
-
-Third, both the question score `y` and the time `t` are ordinal, and the indicator variable Treatment `T` is binary. So we also need to check the data by fitting a ordinal regression model and seeing the performance. However the ordinal regression model has the limitation that it is hard for the model to fit the data between different groups. And the model fit is bad indeed. So this model will not be shown in next part.
+First, as there are repeated measurements taken for the same individual, there is likely correlation between these measurements. One way to account for this is using a mixed effects model.”
+		
+Second, there are measurements collected over time. Auto-regressive models may be appropriate to account for correlation over time.
+		
+Third, the question score y is actually ordinal in nature, ranging from 0 to 8. Thus, we can use ordinal regression to account for this.
 
 We expect that, after fitting these models, there are patterns of increasing scores in Question "Max Anxiety Today", "Confident in My Ability to Handle Situations", "Push Away Thoughts and Feelings I Do Not Like", and decreasing scores in Question "Average Anxiety Today", "Scares Me when I am Nervous", "Jump to Negative Conclusions", "Avg Avoidance of Thoughts, Situations, Sensations". For Question "Physical Feelings in My Body Scare Me", the daily scores are all stable among all patients so we consider not to analyze this question.
 
