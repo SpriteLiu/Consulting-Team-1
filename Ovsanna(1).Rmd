@@ -170,14 +170,24 @@ After analyzing the plots, several noteworthy observations can be made:
 
 By the previous EDA part, we can see the data has some traits.
 
+First, as there are repeated measurements taken for the same individual, there is likely correlation between these measurements. One way to account for this is using a mixed effects model with formula: 
 
-First, as there are repeated measurements taken for the same individual, there is likely correlation between these measurements. One way to account for this is using a mixed effects model.”
+\begin{equation}
+    QuestionScore \sim Treatment + Time \times T + 1 | ID
+\end{equation}
 		
 Second, there are measurements collected over time. Auto-regressive models may be appropriate to account for correlation over time.
+
+\begin{equation}
+    QuestionScore_t = \sum_{i=1}^{p} \varphi_i \ast QuestionScore_{t-i} + \varepsilon_i
+\end{equation}
 		
 Third, the question score y is actually ordinal in nature, ranging from 0 to 8. Thus, we can use ordinal regression to account for this.
 
-We expect that, after fitting these models, there are patterns of increasing scores in Question "Max Anxiety Today", "Confident in My Ability to Handle Situations", "Push Away Thoughts and Feelings I Do Not Like", and decreasing scores in Question "Average Anxiety Today", "Scares Me when I am Nervous", "Jump to Negative Conclusions", "Avg Avoidance of Thoughts, Situations, Sensations". For Question "Physical Feelings in My Body Scare Me", the daily scores are all stable among all patients so we consider not to analyze this question.
+\begin{equation}
+ordered(QuestionScore) \sim Treatment + Time \times T + 1 | ID
+\end{equation}
+
 
 ## Result
 
