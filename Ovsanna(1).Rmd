@@ -162,9 +162,9 @@ After analyzing the plots, several noteworthy observations can be made:
 
 1.The score of Q6, which is"Confident in My Ability to Handle Situations" differs from the other questions. While the scores of other questions increase, the score of Q6 decreases.
 
-2.  The treatment appears to be ineffective for many questions. For instance, Q8, which is "Physical Feelings in My Body Scare Me" shows no change in trend for six patients. Moreover, the treatment may even worsen the condition, as seen in the first patient's score of Q2, which is "Max Anxiety Today" increased after treatment.
+2.The treatment appears to be ineffective for many questions. For instance, Q8, which is "Physical Feelings in My Body Scare Me" shows no change in trend for six patients. Moreover, the treatment may even worsen the condition, as seen in the first patient's score of Q2, which is "Max Anxiety Today" increased after treatment.
 
-3.  Due to the limited dataset consisting of only eight patients with a scoring scale ranging from 0-8, it is challenging to create effective models and it may not be possible to develop highly accurate models. Nevertheless, efforts can be made to create models despite these limitations.
+3.Due to the limited dataset consisting of only eight patients with a scoring scale ranging from 0-8, it is challenging to create effective models and it may not be possible to develop highly accurate models. Nevertheless, efforts can be made to create models despite these limitations.
 
 ## Methods
 
