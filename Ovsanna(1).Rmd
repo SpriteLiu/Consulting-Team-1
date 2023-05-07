@@ -181,7 +181,7 @@ We expect that, after fitting these models, there are patterns of increasing sco
 
 ## Result
 
-We fitted separated model for each problems because different problems may have different effect. Although the data is actually ordinal but 9 points is enough to do linear model, and it is more easier to diagnose linear model. The result of most model is same with what we found in EDA, the score of patient is same after making treatment. For instance, in most problem, only the intercept is significant.
+We fitted separated model for each problems because different problems may have different effect. Even though the respond is ordinal, a linear model may be a useful starting point for modeling because it is easier to interpret and run diagnostics on. The result of most model is same with what we found in EDA, the score of patient is same after making treatment. For instance, in most problem, only the intercept is significant.
 
 ```{r, echo=FALSE}
 library(knitr)
@@ -229,7 +229,7 @@ ggplot(m, mapping = aes(x=t, y=y_pred, group=as.factor(ID))) +
   geom_line()+geom_line(aes(x=t, y=y, group=as.factor(ID), colour=as.factor(ID))) +facet_wrap(~ID)+ggtitle("Average Anxiety Today")+geom_vline(data = vline_data, aes(xintercept = xintercept, group = as.factor(ID)), linetype = "dashed")
 ```
 
-<br> After fitting model, we did the auto-correlation analysis. From acf plot, there could be temporal effect. Therefore we try to use time series model (AR model). After fitting with AR model, the acf plot almost did not change for each problem. Temporal effect may be too small. <br>
+<br> We did the auto-correlation analysis because time is variable in our model. From acf plot, there could be temporal effect. Therefore, we tried to use a time series model, namely an autoregressive (AR) mode. The acf plot almost did not change for each problem. Temporal effect may be too small. <br>
 
 ```{r, echo=FALSE,fig.height=4, fig.width=7,fig.cap="ACF Plot of Linear Mixed Model"}
  m$resid <- resid(model2)
@@ -241,7 +241,6 @@ fm1 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m)
 summary(fm1)
 ```
 
-After fitting with AR model, the acf plot almost did not change for each problem. temporal effect may be too small.
 
 ```{r,echo=FALSE,fig.height=5, fig.width=8,include=FALSE}
 m$resid <- resid(fm1)
@@ -372,7 +371,6 @@ m5$y_pred <- fitted(model7)
 summary(model7)
 ```
 
-\newpage
 
 ```{r, echo=FALSE,fig.height=4, fig.width=7, fig.cap="Linear Mixed Model for Confident in My Ability to Handle Situations"}
 ggplot(m5, mapping = aes(x=t, y=y_pred, group=as.factor(ID))) +
