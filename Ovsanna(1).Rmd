@@ -18,7 +18,7 @@ Our client, Ovsanna Leyfer, who is from Psychological and Brain Sciences Departm
 
 ## Previous steps
 
-Before making the EDAs, I first changed the variable's names of the .xlsx file to make it easier to import, so the new .xlsx file is different from the original one.
+Before making the EDAs, We first changed the variable's names of the .xlsx file to make it easier to import, so the new .xlsx file is different from the original one.
 
 ```{r include=F}
 library(ggplot2)
@@ -36,7 +36,7 @@ data<- read_excel("Daily Monitor Tracking Log.xlsx")
 
 # EDAs
 
-According to the data, there are 2 "two-week" patients, 4"three-week" patients and 2 "four-week" patients. I make plots for each patient's each question and the black line seperates the pre-treatment and treatment time.
+According to the data, there are 2 "two-week" patients, 4"three-week" patients and 2 "four-week" patients. We make plots for each patient's each question and the black line seperates the pre-treatment and treatment time.
 
 ```{r Fig1, fig.cap="2-week pre-treatment patients",echo=F,warning=F,fig.height=4,fig.width=10}
 #Two weeks
