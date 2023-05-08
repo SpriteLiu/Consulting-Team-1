@@ -423,17 +423,11 @@ m6$y <- as.numeric(y)
 
 # Discussion
 
-The results of the ordinal regression model developed to assess the effectiveness of the treatment in improving anxiety among adolescents based on the survey questions scored on an ordinal scale from 0 to 8 should be interpreted with caution due to several limitations.
+One limitation of the mixed effects model is that it assumes a linear relationship between the predictors and the outcome. This assumption may not hold for all problems, and non-linear relationships between the predictors and the outcome may exist. Additionally, the mixed effects model assumes that the effects of the predictors are constant across all individuals, which may not be the case in reality. Furthermore, the number of participants in this study is relatively small, which may limit the power of the mixed effects model to detect significant treatment effects.
 
-First and foremost, the sample size of the dataset is extremely small, consisting of only 8 people's data. This small sample size may limit the statistical power of the model and affect the accuracy of its predictions. Additionally, the small sample size may not be representative of the entire population of adolescents experiencing anxiety issues, which may limit the generalizability of the model's findings.
+Another limitation of the auto-regressive models is that they assume that the correlation between observations decays exponentially over time. This assumption may not hold in all cases, and the correlation may decay at a different rate than the exponential decay assumed by the model. Moreover, the auto-regressive models may be sensitive to outliers and may not perform well in the presence of non-stationarity or non-linear relationships.
 
-Second, The key assumption in ordinal regression is that the effects of any explanatory variables are consistent or proportional across the different thresholds, which may not hold true in this case here for our survey responses. 
-
-Third, the model assumes a linear relationship between the independent and dependent variables. While ordinal regression models can capture nonlinear relationships between variables, the linear model may not accurately represent the relationship between the survey questions and anxiety symptoms.
-
-Additionally, the survey questions are self-reported and may not accurately reflect the severity or frequency of anxiety symptoms. Furthermore, there may be other factors that contribute to anxiety symptoms that are not captured by the survey questions, such as genetic or environmental factors.
-
-Overall, while the ordinal regression model developed in this project provides some initial insights into the effectiveness of the treatment in improving anxiety among adolescents based on the survey questions scored on an ordinal scale from 0 to 8, the above limitations should be taken into consideration when interpreting the results. Future research with a larger sample size and more comprehensive measures of anxiety symptoms may be necessary to provide more reliable and generalizable findings.
+Finally, the ordinal regression model assumes a proportional odds assumption, which means that the odds of being in a higher category of the outcome variable are proportional across all levels of the predictors. While there are ways to check this assumption, such as the Brant test, violating the assumption may lead to biased parameter estimates and inaccurate conclusions.
 
 \newpage
 
