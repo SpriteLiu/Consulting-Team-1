@@ -185,7 +185,7 @@ Second, there are measurements collected over time. Auto-regressive models may b
 Third, the question score y is actually ordinal in nature, ranging from 0 to 8. Thus, we can use ordinal regression to account for this.
 
 \begin{equation}
-ordered(QuestionScore) \sim Treat + Time \times Ttreat + 1 | ID
+ordered(QuestionScore) \sim Treat + Time \times Treat + 1 | ID
 \end{equation}
 
 
