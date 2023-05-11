@@ -423,6 +423,8 @@ m6$y <- as.numeric(y)
 
 # Discussion
 
+One potential confounding feature of the data is that survey questions were answered in privacy before the treatment and in-person in the presence of a therapist during the treatment. This means that differences in pre-treatment and post-treatment responses could be due to the presence of a therapist when answering the survey and not the treatment itself.
+
 One limitation of the mixed effects model is that it assumes a linear relationship between the predictors and the outcome. This assumption may not hold for all problems, and non-linear relationships between the predictors and the outcome may exist. Additionally, the mixed effects model assumes that the effects of the predictors are constant across all individuals, which may not be the case in reality. Furthermore, the number of participants in this study is relatively small, which may limit the power of the mixed effects model to detect significant treatment effects.
 
 Another limitation of the auto-regressive models is that they assume that the correlation between observations decays exponentially over time. This assumption may not hold in all cases, and the correlation may decay at a different rate than the exponential decay assumed by the model. Moreover, the auto-regressive models may be sensitive to outliers and may not perform well in the presence of non-stationarity or non-linear relationships.
