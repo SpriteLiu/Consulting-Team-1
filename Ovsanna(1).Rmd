@@ -196,7 +196,7 @@ We fitted separated model for each problems because different problems may have 
 ```{r, echo=FALSE}
 library(knitr)
 data1 <- data.frame(
-  Row = c("(Intercept)", "T", "t", "T:t"),
+  Row = c("(Intercept)", "Treat", "t", "Treat:t"),
   Estimate = c(2.136820, 0.197230, -0.001098, -0.003483),
   Std.Error = c(0.575868, 0.747232, 0.012335, 0.029450),
   df = c(7.9303, 222.20, 221.08, 221.41),
@@ -218,14 +218,14 @@ p <- as.matrix(newdata)
 y <- c(t(p))
 y <- y[!is.na(y)] 
 t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
-T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+Treat <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
 ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
-m <- data.frame(y,ID,t,T)
+m <- data.frame(y,ID,t,Treat)
 m$y <- as.numeric(y)
 ```
 
 ```{r, echo=FALSE,results='hide'}
-model2 <- lmer(y ~ T + t*T + (1 | as.factor(ID)), data = m)
+model2 <- lmer(y ~ Treat + t*Treat + (1 | as.factor(ID)), data = m)
 m$y_pred <- fitted(model2)
 summary(model2) 
 ```
@@ -247,7 +247,7 @@ acf(m[m$ID==1,]$resid)
 ```
 
 ```{r,include=FALSE}
-fm1 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m)
+fm1 <- lme(y ~ Treat+t*Treat, random = ~1|as.factor(ID),correlation = corAR1(),data = m)
 summary(fm1)
 ```
 
@@ -259,7 +259,7 @@ acf(m[m$ID==1,]$resid)
 
 ```{r,echo=FALSE,include=FALSE}
 m$y <- as.factor(m$y)
-model <- clmm(ordered(y) ~ T + t*T + (1 | as.factor(ID)), data = m)
+model <- clmm(ordered(y) ~ Treat + t*Treat + (1 | as.factor(ID)), data = m)
 summary(model)
 
 ```
@@ -273,15 +273,15 @@ p <- as.matrix(newdata)
 y <- c(t(p))
 y <- y[!is.na(y)] 
 t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
-T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+Treat <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
 ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
-m4 <- data.frame(y,ID,t,T)
+m4 <- data.frame(y,ID,t,Treat)
 m4$y <- as.numeric(y)
 ```
 
 ```{r, echo=FALSE}
 new_data <- data.frame(
-  Row = c("(Intercept)", "T", "t", "T:t"),
+  Row = c("(Intercept)", "Treat", "t", "T:t"),
   Estimate = c(2.16590, 2.04479, -0.04548, -0.05264),
   Std.Error = c(0.81736, 0.72973, 0.01204, 0.02874),
   df = c(7.42557, 221.06774, 220.51531, 220.67366),
@@ -295,7 +295,7 @@ kable(new_data, caption = "Linear Mixed Model for Scares Me when I am Nervous ",
 
 ```{r, echo=FALSE}
 updated_data <- data.frame(
-  Row = c("(Intercept)", "T", "t", "T:t"),
+  Row = c("(Intercept)", "Treat", "t", "T:t"),
   Estimate = c(2.36857845, 1.86567683, -0.05660635, -0.04632292),
   Std.Error = c(0.84549662, 1.06575922, 0.02143659, 0.04515777),
   df = c(220, 220, 220, 220),
@@ -308,13 +308,13 @@ kable(updated_data, caption = "Time Series Model for Scares Me when I am Nervous
 ```
 
 ```{r,echo=FALSE, include=FALSE}
-fm5 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m4)
+fm5 <- lme(y ~ Treat+t*Treat, random = ~1|as.factor(ID),correlation = corAR1(),data = m4)
 d <- summary(fm5)
 d$tTable
 ```
 
 ```{r, echo =FALSE, include=FALSE}
-model6 <- lmer(y ~ T+ t*T + (1 | as.factor(ID)), data = m4)
+model6 <- lmer(y ~ Treat+ t*Treat + (1 | as.factor(ID)), data = m4)
 m4$y_pred <- fitted(model6)
 summary(model6)
 ```
@@ -330,7 +330,7 @@ acf(m4[m4$ID==1,]$resid)
 ```
 
 ```{r,echo=FALSE,include=FALSE}
-fm5 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m4)
+fm5 <- lme(y ~ Treat+t*Treat, random = ~1|as.factor(ID),correlation = corAR1(),data = m4)
 d <- summary(fm5)
 d$tTable
 ```
@@ -342,7 +342,7 @@ acf(m4[m4$ID==1,]$resid)
 
 ```{r,echo=FALSE,include=FALSE}
 m4$y <- as.factor(m4$y)
-ordnal4 <- clmm(ordered(y) ~ T+t*T + (1 | as.factor(ID)), data = m4)
+ordnal4 <- clmm(ordered(y) ~ Treat+t*Treat + (1 | as.factor(ID)), data = m4)
 summary(ordnal4)
 ```
 
@@ -355,15 +355,15 @@ p <- as.matrix(newdata)
 y <- c(t(p))
 y <- y[!is.na(y)] 
 t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
-T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+Treat <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
 ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
-m5 <- data.frame(y,ID,t,T)
+m5 <- data.frame(y,ID,t,Treat)
 m5$y <- as.numeric(y)
 ```
 
 ```{r, echo=FALSE}
 latest_data <- data.frame(
-  Row = c("(Intercept)", "T", "t", "T:t"),
+  Row = c("(Intercept)", "Treat", "t", "Treat:t"),
   Estimate = c(3.631392, -2.978075, 0.003036, 0.118754),
   Std.Error = c(0.728410, 0.669260, 0.011040, 0.026362),
   df = c(7.451728, 221.129847, 220.545842, 220.713363),
@@ -376,7 +376,7 @@ kable(latest_data, caption = "Linear Mixed Model for Confident in My Ability to 
 ```
 
 ```{r,echo=FALSE, include=FALSE}
-model7 <- lmer(y ~ T+ t*T + (1 | as.factor(ID)), data = m5)
+model7 <- lmer(y ~ Treat+ t*Treat + (1 | as.factor(ID)), data = m5)
 m5$y_pred <- fitted(model7)
 summary(model7)
 ```
@@ -393,7 +393,7 @@ acf(m5[m5$ID==9,]$resid)
 ```
 
 ```{r,echo=FALSE,include=FALSE}
-fm6 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m5)
+fm6 <- lme(y ~ Treat+t*Treat, random = ~1|as.factor(ID),correlation = corAR1(),data = m5)
 summary(fm6)
 ```
 
@@ -404,7 +404,7 @@ acf(m5[m5$ID==9,]$resid)
 
 ```{r,echo=FALSE,include=FALSE}
 m5$y <- as.factor(m5$y)
-ordnal5 <- clmm(ordered(y) ~ T+t*T + (1 | as.factor(ID)), data = m5)
+ordnal5 <- clmm(ordered(y) ~ Treat+t*Treat + (1 | as.factor(ID)), data = m5)
 summary(ordnal5)
 ```
 
@@ -415,9 +415,9 @@ p <- as.matrix(newdata)
 y <- c(t(p))
 y <- y[!is.na(y)] 
 t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
-T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+Treat <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
 ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
-m6 <- data.frame(y,ID,t,T)
+m6 <- data.frame(y,ID,t,Treat)
 m6$y <- as.numeric(y)
 ```
 
@@ -436,7 +436,7 @@ Finally, the ordinal regression model assumes a proportional odds assumption, wh
 ## Appendix
 
 ```{r,echo=FALSE}
-model8 <- lmer(y ~ T+ t*T + (1 | as.factor(ID)), data = m6)
+model8 <- lmer(y ~ Treat+ t*Treat + (1 | as.factor(ID)), data = m6)
 m6$y_pred <- fitted(model8)
 summary(model8)
 ```
@@ -452,7 +452,7 @@ acf(m6[m6$ID==9,]$resid)
 ```
 
 ```{r,echo=FALSE}
-fm7 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m6)
+fm7 <- lme(y ~ Treat+t*Treat, random = ~1|as.factor(ID),correlation = corAR1(),data = m6)
 summary(fm7)
 ```
 
@@ -463,7 +463,7 @@ acf(m6[m6$ID==9,]$resid)
 
 ```{r,echo=FALSE}
 m6$y <- factor(m6$y, ordered = TRUE)
-ordnal6 <- clmm(y ~ T+ t*T + (1 | as.factor(ID)), data = m6)
+ordnal6 <- clmm(y ~ Treat+ t*Treat + (1 | as.factor(ID)), data = m6)
 summary(ordnal6)
 ```
 
@@ -474,14 +474,14 @@ p <- as.matrix(newdata)
 y <- c(t(p))
 y <- y[!is.na(y)] 
 t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
-T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+Treat <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
 ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
-m7 <- data.frame(y,ID,t,T)
+m7 <- data.frame(y,ID,t,Treat)
 m7$y <- as.numeric(y)
 ```
 
 ```{r,echo=FALSE}
-model9 <- lmer(y ~ T+ t*T + (1 | as.factor(ID)), data = m7)
+model9 <- lmer(y ~ Treat+ t*Treat + (1 | as.factor(ID)), data = m7)
 m7$y_pred <- fitted(model9)
 summary(model9)
 ```
@@ -497,7 +497,7 @@ acf(m7[m7$ID==1,]$resid)
 ```
 
 ```{r,echo=FALSE}
-fm8 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m7)
+fm8 <- lme(y ~ Treat+t*Treat, random = ~1|as.factor(ID),correlation = corAR1(),data = m7)
 summary(fm8)
 ```
 
@@ -508,7 +508,7 @@ acf(m7[m7$ID==1,]$resid)
 
 ```{r,echo=FALSE}
 m7$y <- factor(m7$y, ordered = TRUE)
-ordnal7 <- clmm(y ~ T+ t*T + (1 | as.factor(ID)), data = m7)
+ordnal7 <- clmm(y ~ Treat+ t*Treat + (1 | as.factor(ID)), data = m7)
 summary(ordnal7)
 ```
 
@@ -519,14 +519,14 @@ p <- as.matrix(newdata)
 y <- c(t(p))
 y <- y[!is.na(y)] 
 t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
-T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+Treat <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
 ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
-m1 <- data.frame(y,ID,t,T)
+m1 <- data.frame(y,ID,t,Treat)
 m1$y <- as.numeric(y)
 ```
 
 ```{r,echo=TRUE,echo=FALSE}
-model3 <- lmer(y ~ T + t*T + (1 | as.factor(ID)), data = m1)
+model3 <- lmer(y ~ Treat + t*Treat + (1 | as.factor(ID)), data = m1)
 m1$y_pred <- fitted(model3)
 summary(model3)
 ```
@@ -542,7 +542,7 @@ acf(m1[m1$ID==1,]$resid)
 ```
 
 ```{r ,echo=FALSE}
-fm2 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m1)
+fm2 <- lme(y ~ Treat+t*Treat, random = ~1|as.factor(ID),correlation = corAR1(),data = m1)
 summary(fm2)
 ```
 
@@ -553,7 +553,7 @@ acf(m1[m1$ID==1,]$resid)
 
 ```{r ,echo=FALSE}
 m1$y <- as.factor(m1$y)
-ordnal1 <- clmm(ordered(y) ~ T+t*T + (1 | as.factor(ID)), data = m1)
+ordnal1 <- clmm(ordered(y) ~ Treat+t*Treat + (1 | as.factor(ID)), data = m1)
 summary(ordnal1)
 ```
 
@@ -564,14 +564,14 @@ p <- as.matrix(newdata)
 y <- c(t(p))
 y <- y[!is.na(y)] 
 t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
-T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+Treat <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
 ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
-m3 <- data.frame(y,ID,t,T)
+m3 <- data.frame(y,ID,t,Treat)
 m3$y <- as.numeric(y)
 ```
 
 ```{r ,echo=FALSE}
-model5 <- lmer(y ~ T + t*T + (1 | as.factor(ID)), data = m3)
+model5 <- lmer(y ~ Treat + t*Treat + (1 | as.factor(ID)), data = m3)
 m3$y_pred <- fitted(model5)
 summary(model5)
 ```
@@ -587,7 +587,7 @@ acf(m3[m3$ID==11,]$resid)
 ```
 
 ```{r,echo=FALSE}
-fm4 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m3)
+fm4 <- lme(y ~ Treat+t*Treat, random = ~1|as.factor(ID),correlation = corAR1(),data = m3)
 b <- summary(fm4)
 b$tTable
 ```
@@ -599,7 +599,7 @@ acf(m3[m3$ID==11,]$resid)
 
 ```{r,echo=FALSE}
 m3$y <- as.factor(m3$y)
-ordnal3 <- clmm(ordered(y) ~ T+t*T + (1 | as.factor(ID)), data = m3)
+ordnal3 <- clmm(ordered(y) ~ Treat+t*Treat + (1 | as.factor(ID)), data = m3)
 summary(ordnal3)
 ```
 
@@ -610,14 +610,14 @@ p <- as.matrix(newdata)
 y <- c(t(p))
 y <- y[!is.na(y)] 
 t <- c(1:22,1:29,1:22,1:36,1:29,1:29,1:35,1:29)
-T <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
+Treat <- c(rep(0,14),rep(1,8),rep(0,21),rep(1,8),rep(0,14),rep(1,8),rep(0,28),rep(1,8),rep(0,21),rep(1,8),rep(0,21),rep(1,8),rep(0,28),rep(1,7),rep(0,21),rep(1,8))
 ID <- c(rep(1,22),rep(5,29),rep(3,22),rep(6,36),rep(9,29),rep(12,29),rep(11,35),rep(17,29))
-m2 <- data.frame(y,ID,t,T)
+m2 <- data.frame(y,ID,t,Treat)
 m2$y <- as.numeric(y)
 ```
 
 ```{r,echo=FALSE}
-model4 <- lmer(y ~ T + t*T + (1 | as.factor(ID)), data = m2)
+model4 <- lmer(y ~ Treat + t*Treat + (1 | as.factor(ID)), data = m2)
 m2$y_pred <- fitted(model4)
 summary(model4)
 ```
@@ -633,7 +633,7 @@ acf(m2[m2$ID==11,]$resid)
 ```
 
 ```{r,echo=FALSE}
-fm3 <- lme(y ~ T+t*T, random = ~1|as.factor(ID),correlation = corAR1(),data = m2)
+fm3 <- lme(y ~ Treat+t*Treat, random = ~1|as.factor(ID),correlation = corAR1(),data = m2)
 a <-summary(fm3)
 
 ```
@@ -645,6 +645,6 @@ acf(m2[m2$ID==11,]$resid)
 
 ```{r ,echo=FALSE}
 m2$y <- as.factor(m2$y)
-ordnal2 <- clmm(ordered(y) ~ T+t*T + (1 | as.factor(ID)), data = m2)
+ordnal2 <- clmm(ordered(y) ~ Treat+t*Treat + (1 | as.factor(ID)), data = m2)
 summary(ordnal2)
 ```
